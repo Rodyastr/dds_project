@@ -26,37 +26,37 @@
 
 **1. Клонирование репозитория**
 
-git clone https://github.com/Rodyastr/dds_project.git
-cd dds_project # Перейдите в корневую папку проекта
+* git clone https://github.com/Rodyastr/dds_project.git
+* cd dds_project # Перейдите в корневую папку проекта
 
 **2. Создание и активация виртуального окружения**
 
 Рекомендуется использовать виртуальное окружение для изоляции зависимостей проекта.
 
-python -m venv venv  
+* python -m venv venv  
 # Для Windows:  
-venv\Scripts\activate  
+* venv\Scripts\activate  
 # Для macOS/Linux:  
-source venv/bin/activate
+* source venv/bin/activate
 
 **3. Установка зависимостей**
 
 После активации виртуального окружения установите все необходимые библиотеки из файла requirements.txt.
 
-pip install -r requirements.txt
+* pip install -r requirements.txt
 
 **4. Настройка базы данных и миграции**
 
 Проект использует SQLite по умолчанию, что удобно для локальной разработки. Перед первым запуском необходимо применить миграции.
 
-python manage.py makemigrations
-python manage.py migrate
+* python manage.py makemigrations
+* python manage.py migrate
 
 **5. Создание суперпользователя (по желанию)**
 
 Для доступа к административной панели Django и удобного управления данными вы можете создать суперпользователя:
 
-python manage.py createsuperuser
+* python manage.py createsuperuser
 
 Следуйте инструкциям в консоли для ввода имени пользователя, email и пароля.
 
@@ -64,7 +64,7 @@ python manage.py createsuperuser
 
 Теперь вы можете запустить локальный сервер Django:
 
-python manage.py runserver
+* python manage.py runserver
 
 Проект будет доступен по адресу: http://127.0.0.1:8000/
 
@@ -78,7 +78,7 @@ python manage.py runserver
 4.  **Подкатегории:** Создайте подкатегории, привязывая каждую к конкретной категории (например, "VPS" -> "Инфраструктура (Пополнение)").  
 
 **Структура проекта**
-
+```
 └── dds_project/ # Корневая папка проекта Django
     ├── dds/ # Приложение по управлению ДДС
     │   ├── admin.py
@@ -104,5 +104,5 @@ python manage.py runserver
             ├── dictionary_confirm_delete.html
             ├── dictionary_form.html
             └── dictionary_management.html
-
+```
 Автор: Rodyastr
