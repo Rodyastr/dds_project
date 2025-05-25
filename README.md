@@ -105,4 +105,16 @@
             ├── dictionary_form.html
             └── dictionary_management.html
 ```
+** Скриншоты работы сервиса **
+
+1. Главная страница
+![Image](https://github.com/user-attachments/assets/986de922-b726-4391-9577-1070d97a6dae)
+2. Фильтрация
+![Image](https://github.com/user-attachments/assets/97bca6bf-771e-4c19-aab0-68d112b74a55)
+3. Создание записи
+![Image](https://github.com/user-attachments/assets/13638a3f-89b5-4e3b-9dbb-f9d966fab93e)
+4. Справочник
+![Image](https://github.com/user-attachments/assets/44070422-3f7c-464b-b6d6-6c937a04a846)
+
+
 Автор: Rodyastr
