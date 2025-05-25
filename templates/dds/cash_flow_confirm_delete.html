@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить запись ДДС{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Удалить запись ДДС</h1>
+<div class="alert alert-warning">
+    <p>Вы уверены, что хотите удалить запись:</p>
+    <p><strong>{{ cash_flow.date|date:"d.m.Y H:i" }} - {{ cash_flow.flow_type.name }}: {{ cash_flow.amount|floatformat:2 }} ₽</strong></p>
+</div>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Удалить</button>
+    <a href="{% url 'cash_flow_list' %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Управление справочниками{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Управление справочниками</h1>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Статусы</h5>
+                <a href="{% url 'status_create' %}" class="btn btn-success btn-sm">Добавить статус</a>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for status in statuses %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ status.name }}
+                        <span>
+                            <a href="{% url 'status_edit' status.pk %}" class="btn btn-sm btn-warning me-2">Редактировать</a>
+                            <a href="{% url 'status_delete' status.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                        </span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-center">Статусы не найдены.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Типы</h5>
+                <a href="{% url 'flow_type_create' %}" class="btn btn-success btn-sm">Добавить тип</a>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for type in flow_types %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ type.name }}
+                        <span>
+                            <a href="{% url 'flow_type_edit' type.pk %}" class="btn btn-sm btn-warning me-2">Редактировать</a>
+                            <a href="{% url 'flow_type_delete' type.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                        </span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-center">Типы не найдены.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Категории</h5>
+                <a href="{% url 'category_create' %}" class="btn btn-success btn-sm">Добавить категорию</a>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for category in categories %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ category.name }} ({{ category.flow_type.name }})
+                        <span>
+                            <a href="{% url 'category_edit' category.pk %}" class="btn btn-sm btn-warning me-2">Редактировать</a>
+                            <a href="{% url 'category_delete' category.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                        </span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-center">Категории не найдены.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Подкатегории</h5>
+                <a href="{% url 'subcategory_create' %}" class="btn btn-success btn-sm">Добавить подкатегорию</a>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for subcategory in subcategories %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ subcategory.name }} ({{ subcategory.category.name }}) - {{ subcategory.category.flow_type.name }}
+                        <span>
+                            <a href="{% url 'subcategory_edit' subcategory.pk %}" class="btn btn-sm btn-warning me-2">Редактировать</a>
+                            <a href="{% url 'subcategory_delete' subcategory.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                        </span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-center">Подкатегории не найдены.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

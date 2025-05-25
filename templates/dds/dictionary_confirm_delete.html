@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить {{ item_type }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Удалить {{ item_type }}</h1>
+{% if error_message %}
+    <div class="alert alert-danger">
+        <p>{{ error_message }}</p>
+        <a href="{% url 'dictionary_management' %}" class="btn btn-secondary">Вернуться к справочникам</a>
+    </div>
+{% else %}
+    <div class="alert alert-warning">
+        <p>Вы уверены, что хотите удалить {{ item_type }}: <strong>{{ item.name }}</strong>?</p>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a href="{% url 'dictionary_management' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+{% endif %}
+{% endblock %}

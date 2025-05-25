@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}Список записей ДДС{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Записи ДДС</h1>
+
+<div class="card mb-4">
+    <div class="card-header">
+        Фильтры
+    </div>
+    <div class="card-body">
+        <form method="GET" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label for="start_date" class="form-label">Дата с:</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ start_date }}">
+            </div>
+            <div class="col-md-3">
+                <label for="end_date" class="form-label">Дата по:</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ end_date }}">
+            </div>
+            <div class="col-md-2">
+                <label for="status" class="form-label">Статус:</label>
+                <select class="form-select" id="status" name="status">
+                    <option value="">Все</option>
+                    {% for status in statuses %}
+                        <option value="{{ status.id }}" {% if selected_status == status.id|stringformat:"s" %}selected{% endif %}>{{ status.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="flow_type" class="form-label">Тип:</label>
+                <select class="form-select" id="flow_type" name="flow_type">
+                    <option value="">Все</option>
+                    {% for type in flow_types %}
+                        <option value="{{ type.id }}" {% if selected_flow_type == type.id|stringformat:"s" %}selected{% endif %}>{{ type.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="category" class="form-label">Категория:</label>
+                <select class="form-select" id="category" name="category">
+                    <option value="">Все</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="subcategory" class="form-label">Подкатегория:</label>
+                <select class="form-select" id="subcategory" name="subcategory">
+                    <option value="">Все</option>
+                    {% for subcat in subcategories %}
+                        <option value="{{ subcat.id }}" {% if selected_subcategory == subcat.id|stringformat:"s" %}selected{% endif %}>{{ subcat.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Применить</button>
+            </div>
+            <div class="col-md-2">
+                <a href="{% url 'cash_flow_list' %}" class="btn btn-secondary w-100">Сбросить</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Статус</th>
+                <th>Тип</th>
+                <th>Категория</th>
+                <th>Подкатегория</th>
+                <th>Сумма (₽)</th>
+                <th>Комментарий</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cf in cash_flows %}
+            <tr>
+                <td>{{ cf.date|date:"d.m.Y H:i" }}</td>
+                <td>{{ cf.status.name }}</td>
+                <td>{{ cf.flow_type.name }}</td>
+                <td>{{ cf.category.name }}</td>
+                <td>{{ cf.subcategory.name }}</td>
+                <td>{{ cf.amount|floatformat:2 }}</td>
+                <td>{{ cf.comment|default:"-" }}</td>
+                <td>
+                    <a href="{% url 'cash_flow_edit' cf.pk %}" class="btn btn-sm btn-warning">Редактировать</a>
+                    <a href="{% url 'cash_flow_delete' cf.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="text-center">Записи ДДС не найдены.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        $('#flow_type').change(function() {
+            var flowTypeId = $(this).val();
+            if (flowTypeId) {
+                $.ajax({
+                    url: "{% url 'ajax_load_categories' %}",
+                    data: {
+                        'flow_type_id': flowTypeId
+                    },
+                    success: function(data) {
+                        $('#category').html('<option value="">Все</option>');
+                        $.each(data, function(key, value) {
+                            $('#category').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                        $('#subcategory').html('<option value="">Все</option>'); // Сброс подкатегорий при смене типа
+                    }
+                });
+            } else {
+                $('#category').html('<option value="">Все</option>');
+                $('#subcategory').html('<option value="">Все</option>');
+            }
+        });
+
+        $('#category').change(function() {
+            var categoryId = $(this).val();
+            if (categoryId) {
+                $.ajax({
+                    url: "{% url 'ajax_load_subcategories' %}",
+                    data: {
+                        'category_id': categoryId
+                    },
+                    success: function(data) {
+                        $('#subcategory').html('<option value="">Все</option>');
+                        $.each(data, function(key, value) {
+                            $('#subcategory').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#subcategory').html('<option value="">Все</option>');
+            }
+        });
+    });
+</script>
+{% endblock %}
